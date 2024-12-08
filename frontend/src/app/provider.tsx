@@ -8,7 +8,6 @@ import { MainErrorFallback } from '@/components/errors/main';
 import { Notifications } from '@/components/ui/notifications';
 import { Spinner } from '@/components/ui/spinner';
 import { queryConfig } from '@/lib/react-query';
-import { Theme } from "@radix-ui/themes";
 type Props = {
   children: React.ReactNode;
 };
@@ -22,7 +21,6 @@ export const AppProvider = ({ children }: Props) => {
   );
 
   return (
-    <Theme>
     <React.Suspense
       fallback={
         <div className="min-h-screen min-w-screen items-center justify-center">
@@ -40,6 +38,5 @@ export const AppProvider = ({ children }: Props) => {
         </HelmetProvider>
       </ErrorBoundary>
     </React.Suspense>
-    </Theme>
   );
 };
