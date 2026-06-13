@@ -10,10 +10,17 @@ import authRoutes from "@/routes/auth.route.js";
 import { authenticate } from "@/middlewares/authenticate.js";
 import userRoutes from "@/routes/user.routes.js";
 import sessionRoutes from "@/routes/session.routes.js";
+import logger from "@/utils/logger.js";
+import morgan from "morgan";
 
 const app = express();
 
-// Middleware
+// Middlewares
+app.use(
+  morgan("dev", {
+    stream: { write: (message: string) => logger.info(message.trim()) },
+  }),
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(

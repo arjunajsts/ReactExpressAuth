@@ -1,14 +1,19 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { AppRoot, AppRootErrorBoundary } from '@/app/layout';
 import { ProtectedRoute } from '@/components/protected';
-import { GlobalSpinnerFallback } from '@/app/provider';
-// Import your global fallback component
+import { Spinner } from '@/components/spinner';
 
+// Import your global fallback component
+export const Fallback = () => (
+  <div className="flex h-screen w-screen items-center justify-center">
+    <Spinner size="xl" />
+  </div>
+);
 
 export const appRouterInstance = createBrowserRouter([
   {
     path: '/auth/register',
-    HydrateFallback: GlobalSpinnerFallback, // Uses your Tailwind Spinner
+    HydrateFallback: Fallback, // Uses your Tailwind Spinner
     lazy: async () => {
       const { RegisterRoute } = await import('@/app/auth/register/page');
       return { Component: RegisterRoute };
@@ -16,7 +21,7 @@ export const appRouterInstance = createBrowserRouter([
   },
   {
     path: "/auth/verify/email/:code",
-    HydrateFallback: GlobalSpinnerFallback,
+    HydrateFallback: Fallback,
     lazy: async () => {
       const { VerifyEmailRoute } = await import("@/app/auth/verify-email/page");
       return { Component: VerifyEmailRoute };
@@ -24,7 +29,7 @@ export const appRouterInstance = createBrowserRouter([
   },
   {
     path: '/auth/login',
-    HydrateFallback: GlobalSpinnerFallback,
+    HydrateFallback: Fallback,
     lazy: async () => {
       const { LoginRoute } = await import('@/app/auth/login/page');
       return { Component: LoginRoute };
@@ -32,7 +37,7 @@ export const appRouterInstance = createBrowserRouter([
   },
   {
     path: '/auth/password/forgot',
-    HydrateFallback: GlobalSpinnerFallback,
+    HydrateFallback: Fallback,
     lazy: async () => {
       const { PasswordForgot } = await import('@/app/auth/password-forgot/page');
       return { Component: PasswordForgot };
@@ -40,7 +45,7 @@ export const appRouterInstance = createBrowserRouter([
   },
   {
     path: '/auth/password/reset',
-    HydrateFallback: GlobalSpinnerFallback,
+    HydrateFallback: Fallback,
     lazy: async () => {
       const { PasswordResetRoute } = await import('@/app/auth/password-reset/page');
       return { Component: PasswordResetRoute };
@@ -48,13 +53,9 @@ export const appRouterInstance = createBrowserRouter([
   },
   {
     path: '/',
-    element: (
-      <ProtectedRoute>
-        <AppRoot />
-      </ProtectedRoute>
-    ),
+    Component: ProtectedLayout,
     ErrorBoundary: AppRootErrorBoundary,
-    HydrateFallback: GlobalSpinnerFallback,
+    HydrateFallback: Fallback,
     children: [
       {
         path: 'dashboard',
@@ -76,7 +77,7 @@ export const appRouterInstance = createBrowserRouter([
   },
   {
     path: '*',
-    HydrateFallback: GlobalSpinnerFallback,
+    HydrateFallback: Fallback,
     lazy: async () => {
       const { NotFoundRoute } = await import('@/components/not-found/not-found');
       return { Component: NotFoundRoute };
@@ -84,6 +85,15 @@ export const appRouterInstance = createBrowserRouter([
     ErrorBoundary: AppRootErrorBoundary,
   },
 ]);
+
+
+function ProtectedLayout() {
+  return (
+    <ProtectedRoute>
+      <AppRoot />
+    </ProtectedRoute>
+  );
+}
 
 export const AppRouter = () => {
   return <RouterProvider router={appRouterInstance} />;

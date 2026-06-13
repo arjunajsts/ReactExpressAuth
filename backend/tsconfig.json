@@ -15,23 +15,12 @@
     "outDir": "dist",
     "sourceMap": true,
     "lib": ["ES2022"],
-    "baseUrl": "./",
+    "moduleResolution": "nodenext",
     "paths": {
-      "@/*": ["src/*"]
-    },
-    "moduleResolution": "nodenext" 
+      "@/*": ["./src/*"]
+    }
   },
-  "include": [
-    "src/types/index.d.ts", 
-    "index.ts", 
-    "app.ts", 
-    "src/**/*"
-  ],
-  "typeRoots": [
-    "node_modules/@types",
-    "src/types"  // Assuming you create a types folder in your src directory
-  ],
-  "plugins": [
-      { "transform": "typescript-transform-paths" }
-    ]
+  "include": ["src/types/index.d.ts", "index.ts", "app.ts", "src/**/*"],
+  "typeRoots": ["node_modules/@types", "src/types"],
+  "plugins": [{ "transform": "typescript-transform-paths" }]
 }

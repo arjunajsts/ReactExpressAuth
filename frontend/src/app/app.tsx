@@ -2,24 +2,17 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import * as React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { HelmetProvider } from 'react-helmet-async';
 
 import { MainErrorFallback } from '@/components/errors/main';
 import { Notifications } from '@/components/ui/notifications';
 import { Spinner } from '@/components/ui/spinner';
 import { queryConfig } from '@/lib/react-query';
-type Props = {
-  children: React.ReactNode;
-};
+import { AppRouter } from './router';
 
 // Inside your AppProvider.tsx file (add export to this container)
-export const GlobalSpinnerFallback = () => (
-  <div className="flex h-screen w-screen items-center justify-center">
-    <Spinner size="xl" />
-  </div>
-);
 
-export const AppProvider = ({ children }: Props) => {
+
+export const App = () => {
   const [queryClient] = React.useState(
     () =>
       new QueryClient({
@@ -36,13 +29,11 @@ export const AppProvider = ({ children }: Props) => {
       }
     >
       <ErrorBoundary FallbackComponent={MainErrorFallback}>
-        <HelmetProvider>
-          <QueryClientProvider client={queryClient}>
-            {import.meta.env.DEV && <ReactQueryDevtools />}
-            <Notifications />
-            {children}
-          </QueryClientProvider>
-        </HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          {import.meta.env.DEV && <ReactQueryDevtools />}
+          <Notifications />
+           <AppRouter />
+        </QueryClientProvider>
       </ErrorBoundary>
     </React.Suspense>
   );

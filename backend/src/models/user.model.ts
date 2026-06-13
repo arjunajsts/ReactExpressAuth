@@ -26,10 +26,9 @@ const userSchema = new mongoose.Schema<UserDocument>(
 );
 
 // Hash the password before saving the user document
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+userSchema.pre("save", async function (this: UserDocument) {
+  if (!this.isModified("password")) return;
   this.password = await hashValue(this.password);
-  next();
 });
 
 // Add method to compare passwords

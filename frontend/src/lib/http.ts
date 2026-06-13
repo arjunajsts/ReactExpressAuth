@@ -92,7 +92,7 @@ fetch.interceptors.response.use(
         return fetch(config);
       } catch (refreshError) {
         processQueue(refreshError as Error, false);
-        handleLogout();
+        // handleLogout();
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
