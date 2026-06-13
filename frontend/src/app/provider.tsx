@@ -12,6 +12,13 @@ type Props = {
   children: React.ReactNode;
 };
 
+// Inside your AppProvider.tsx file (add export to this container)
+export const GlobalSpinnerFallback = () => (
+  <div className="flex h-screen w-screen items-center justify-center">
+    <Spinner size="xl" />
+  </div>
+);
+
 export const AppProvider = ({ children }: Props) => {
   const [queryClient] = React.useState(
     () =>
