@@ -1,40 +1,31 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import * as React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { MainErrorFallback } from '@/components/errors/main';
 import { Notifications } from '@/components/ui/notifications';
-import { Spinner } from '@/components/ui/spinner';
-import { queryConfig } from '@/lib/react-query';
-import { AppRouter } from './router';
-
-// Inside your AppProvider.tsx file (add export to this container)
+import { globalQueryClient } from '@/lib/react-query';
+import { Router } from './router';
 
 
-export const App = () => {
-  const [queryClient] = React.useState(
-    () =>
-      new QueryClient({
-        defaultOptions: queryConfig,
-      }),
-  );
+const RootErrorFallback = () => (
+  <div className="flex h-screen w-screen flex-col items-center justify-center bg-red-50 text-red-900">
+    <h1 className="text-xl font-bold">A critical system exception occurred.</h1>
+    <button className="mt-4 rounded bg-red-600 px-4 py-2 text-white" onClick={() => window.location.reload()}>
+      Reload Application
+    </button>
+  </div>
+);
 
-  return (
-    <React.Suspense
-      fallback={
-        <div className="min-h-screen min-w-screen items-center justify-center">
-          <Spinner size="xl" />
-        </div>
-      }
-    >
-      <ErrorBoundary FallbackComponent={MainErrorFallback}>
-        <QueryClientProvider client={queryClient}>
-          {import.meta.env.DEV && <ReactQueryDevtools />}
-          <Notifications />
-           <AppRouter />
-        </QueryClientProvider>
-      </ErrorBoundary>
-    </React.Suspense>
-  );
-};
+export const App = () => (
+  <React.Suspense fallback={<div className="p-8">Loading Framework Context...</div>}>
+    <ErrorBoundary FallbackComponent={RootErrorFallback}>
+      <QueryClientProvider client={globalQueryClient}>
+        <Notifications />
+        <Router />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </ErrorBoundary>
+  </React.Suspense>
+);

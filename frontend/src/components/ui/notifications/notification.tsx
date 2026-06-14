@@ -15,12 +15,13 @@ export type NotificationProps = {
     type: keyof typeof icons;
     title: string;
     message?: string;
+    reason?: string;
   };
   onDismiss: (id: string) => void;
 };
 
 export const Notification = ({
-  notification: { id, type, title, message },
+  notification: { id, type, title, message, reason },
   onDismiss,
 }: NotificationProps) => {
   return (
@@ -32,6 +33,8 @@ export const Notification = ({
             <div className="ml-3 w-0 flex-1 pt-0.5">
               <p className="text-sm font-medium text-gray-900">{title}</p>
               <p className="mt-1 text-sm text-gray-500">{message}</p>
+              <p className="mt-1 text-sm text-gray-500">{reason}</p>
+
             </div>
             <div className="ml-4 flex shrink-0">
               <button

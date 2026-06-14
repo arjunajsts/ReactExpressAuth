@@ -1,14 +1,18 @@
-import { Outlet } from 'react-router-dom';
-import {Header} from '@/components/ui/layout/header'
-export const AppRoot = () => {
+import { Header } from '@/components/ui/layout/header';
+import React from 'react';
+
+interface Props {
+  children: React.ReactNode
+}
+
+export function Layout({ children }: Props) {
   return (
-    <div>
-      <Header />
-      <Outlet />
+    <div className="min-h-screen bg-background">
+      {/* Global Sidebar/Navbar can sit here */}
+      <main>
+        <Header />
+        {children}
+      </main>
     </div>
   );
-};
-
-export const AppRootErrorBoundary = () => {
-  return <div>Something went wrong!</div>;
-};
+}

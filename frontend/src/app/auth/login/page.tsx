@@ -19,17 +19,20 @@ import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import CardWrapper from "../components/card-wrapper"
 import FormError from "../components/form-error"
-import AuthLoyout from "../layout"
+
 import { useNotifications } from "@/components/ui/notifications"
+import { GuestLayout } from "../layout"
+import { useAuthFlag } from "@/hooks/useAuthFlag"
 
 export function LoginRoute() {
-
+  const { login: loggedIn } = useAuthFlag()
   const [error, setError] = useState<string>()
   const navigate = useNavigate()
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: login,
     mutationKey: ["login"],
+    onSuccess: loggedIn,
     onError: (error) => console.log(error)
   })
 
@@ -42,9 +45,9 @@ export function LoginRoute() {
     },
   })
 
-  const onSubmit = (data:LoginReqType) => {
+  const onSubmit = (data: LoginReqType) => {
     mutateAsync(data, {
-      onSuccess: ({message}) => {
+      onSuccess: ({ message }) => {
         useNotifications.getState().addNotification({
           type: "success",
           title: message
@@ -55,10 +58,8 @@ export function LoginRoute() {
     })
   }
 
-
-
   return (
-    <AuthLoyout>
+    <GuestLayout>
       <CardWrapper
         cardTitle="Welcome back"
         cardDescription="Enter email & password to continue"
@@ -111,6 +112,6 @@ export function LoginRoute() {
           </form>
         </Form>
       </CardWrapper>
-    </AuthLoyout>
+    </GuestLayout>
   )
 }

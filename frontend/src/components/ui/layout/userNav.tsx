@@ -20,10 +20,12 @@ import { logout } from "@/lib/api"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "react-router-dom"
 import { useNotifications } from "../notifications"
- 
+import { useAuthFlag } from "@/hooks/useAuthFlag"
+
 export function UserNav() {
     const { user, isLoading } = useAuth()
-    const  queryClient =  useQueryClient()
+    const { logout: loggingOut } = useAuthFlag()
+    const queryClient = useQueryClient()
     const navigate = useNavigate()
     const { mutateAsync: logoutFn } = useMutation({
         mutationFn: logout,
@@ -32,8 +34,8 @@ export function UserNav() {
                 type: "success",
                 title: message
             });
-            console.log(queryClient.getQueryCache().getAll());
-            queryClient.clear()
+            queryClient.setQueryData(["auth"], null);
+            loggingOut()
             navigate("/auth/login")
         }
 

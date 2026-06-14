@@ -1,7 +1,6 @@
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import AuthLoyout from "../layout"
 import { Link } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -12,6 +11,7 @@ import { passwordForgot } from "@/lib/api"
 import { PasswordForgotReqType } from "@/type"
 import { useNotifications } from "@/components/ui/notifications"
 import { CheckCircle2 } from "lucide-react"
+import { Layout } from "@/app/layout"
 
 export function PasswordForgot() {
 
@@ -44,8 +44,8 @@ export function PasswordForgot() {
             {
                 !isSuccess ?
 
-                    <AuthLoyout>
-                        <div className="flex flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8 rounded-md w-96">
+                    <Layout>
+                        <div className="border flex flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8 rounded-md w-96 m-auto mt-10">
                             <div className="mx-auto max-w-md text-center">
                                 <div className="space-y-2">
                                     <h1 className="text-2xl font-bold tracking-tight text-foreground pb-2">Reset Password</h1>
@@ -82,7 +82,7 @@ export function PasswordForgot() {
                                 <Link to={"/auth/login"}> Back to login </Link>
                             </Button>
                         </div>
-                    </AuthLoyout>
+                    </Layout>
                     : <div className="bg-emerald-200 flex px-2 items-center gap-2 rounded-md text-white w-96 h-16 my-12 mx-auto">
                         <div className="">
                             <CheckCircle2 className="text-emerald-500 size-12" />
